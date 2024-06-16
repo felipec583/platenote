@@ -62,6 +62,7 @@ export interface PlateListTable {
 
 export type PlateList = Selectable<PlateListTable>;
 export type NewPlateList = Insertable<PlateListTable>;
+export type PlateListUpdate = Updateable<PlateListTable>
 
 export interface PlateEntryTable {
   id: Generated<string>;
