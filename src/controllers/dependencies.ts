@@ -1,4 +1,4 @@
-import { NumberPlateRepository } from "../repositories/numberPlate.repository.js";
+import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository.js";
 import { NumberPlateService } from "../services/numberPlate.service.js";
 import { NumberPlateController } from "./numberPlate.controller.js";
 
