@@ -1,5 +1,5 @@
-import { NumberPlateRepository } from "../repositories/numberPlate.repository";
-import { NumberPlate, NumberPlateUpdate } from "../types/schema";
+import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
+import { NumberPlate } from "../types/schema";
 
 
 export class NumberPlateService {
