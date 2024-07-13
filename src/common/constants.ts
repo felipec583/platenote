@@ -33,4 +33,17 @@ const dbConnection: PoolConfig = {
   port: ENVIRONMENT.PROD ? +PROD_DB_PORT! : +LOCAL_DB_PORT!,
 };
 
-export { dbConnection, ENVIRONMENT, PORT };
+const START_MORNING = 5;
+const END_MORNING = 11;
+
+const START_EVENING = 18;
+const END_EVENING = 22;
+
+const TIME = {
+  START_EVENING,
+  START_MORNING,
+  END_EVENING,
+  END_MORNING
+};
+
+export { dbConnection, ENVIRONMENT, PORT, TIME };
