@@ -1,8 +1,9 @@
-import {  NewPlateList } from "../../types/schema";
+import {  NewPlateList, PlateList, PlateListUpdate } from "../../types/schema";
+import { Repository } from "../genericRepository";
 
-export interface INumberPlateListRepository<T> {
-    create(plateList:NewPlateList):Promise<T>
-    delete(id:string):Promise<T  |undefined>  
-    findById(id:string):Promise<T | undefined>
-    findAll():Promise<T>
+export type NumberPlateListTypes = "day_id" | "shift_id" | "id"
+
+export interface INumberPlateListRepository extends Repository<PlateList, NewPlateList, PlateListUpdate> {
+    findBy(type: NumberPlateListTypes, value:string):Promise<PlateList | undefined>
+  
 }

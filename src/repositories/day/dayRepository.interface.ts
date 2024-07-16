@@ -1,7 +1,9 @@
-import { NewDay } from "../../types/schema";
+import { Day, DayUpdate, NewDay } from "../../types/schema";
+import { Repository } from "../genericRepository";
 export type dayValues = "id" | "date"
-export interface IDayRepository<T> {
-create(day:NewDay):Promise<T>
-delete(id:string):Promise<T | undefined>
-find(type:dayValues, id:string):Promise<T | undefined>
+
+type Rep = Pick<Repository<Day, NewDay, DayUpdate>, "create" | "delete" >
+
+export interface IDayRepository extends Rep {
+findBy(type:dayValues, value:string):Promise<Day| undefined>
 }

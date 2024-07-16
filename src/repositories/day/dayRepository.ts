@@ -3,17 +3,17 @@ import { IDayRepository, dayValues } from "./dayRepository.interface";
 import { db } from "../../config/database.js";
 
 
-export class  DayRepository implements IDayRepository<object> {
-  async create(day: NewDay):Promise<object> {
+export class  DayRepository implements IDayRepository {
+  async create(day: NewDay) {
     return await db.insertInto("day").values(day).returningAll().executeTakeFirstOrThrow();
   }
 
-  async delete(id: string): Promise<object | undefined> {
+  async delete(id: string) {
     return await db.deleteFrom("day").where("id", "=", id).returningAll().executeTakeFirstOrThrow();
   }
 
-  async find(type:dayValues, value:string) {
-    return await db.selectFrom("day").where(`${type}`, "=", value).executeTakeFirst();
+  async findBy(type:dayValues, value:string) {
+    return await db.selectFrom("day").selectAll().where(`${type}`, "=", value).executeTakeFirst();
   }
 
 }

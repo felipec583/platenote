@@ -1,11 +1,13 @@
 import { db } from "../../config/database.js";
 import {  NewNumberPlate, NumberPlateUpdate } from "../../types/schema.js";
-import { INumberPlateRepository } from "../number-plate/numberPlateRepository.interface";
+import { INumberPlateRepository, NumberPlateTypes } from "../number-plate/numberPlateRepository.interface";
 
-export class NumberPlateRepository implements INumberPlateRepository<object | undefined> {
+export class NumberPlateRepository implements INumberPlateRepository {
+  async findById(id: string): Promise<object | undefined> {
+    return await db.selectFrom("number_plate").selectAll().where("id", "=", id).executeTakeFirst();  }
     
-  async findById(id:string){
-    return await db.selectFrom("number_plate").selectAll().where("id", "=", id).executeTakeFirst();
+  async findBy(type:NumberPlateTypes, value:string){
+    return await db.selectFrom("number_plate").selectAll().where(`${type}`, "=", value).executeTakeFirst();
   }
 
   async findAll(){

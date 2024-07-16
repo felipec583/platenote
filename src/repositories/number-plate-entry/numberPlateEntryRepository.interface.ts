@@ -1,9 +1,9 @@
-import {  NewPlateEntry, PlateEntryUpdate } from "../../types/schema";
+import {  NewPlateEntry, PlateEntryUpdate, PlateEntry } from "../../types/schema";
+import { Repository } from "../genericRepository.js";
 
-export interface INumberPlateEntryRepository<T> {
-    create(plateList:NewPlateEntry):Promise<T>
-    update(id:string, plateList:PlateEntryUpdate):Promise<T>
-    delete(id:string):Promise<T  |undefined>  
-    findById(id:string):Promise<T | undefined>
-    findAll():Promise<T>
+export type NumberEntryValuesType = "is_registered" |
+"has_left"
+| "plate_id"
+export interface INumberPlateEntryRepository extends Repository<PlateEntry ,NewPlateEntry, PlateEntryUpdate> {
+findBy(type:NumberEntryValuesType, value:string):Promise<PlateEntry | undefined>
 }

@@ -1,9 +1,8 @@
-import {  NewNumberPlate, NumberPlateUpdate } from "../../types/schema";
+import {  NewNumberPlate, NumberPlateUpdate, NumberPlate } from "../../types/schema";
+import { Repository } from "../genericRepository";
 
-export interface INumberPlateRepository<T> {
-    findById(plate:string):Promise<T>
-    findAll():Promise<T>
-    create(numberPlate: NewNumberPlate):Promise<T>
-    update(id:string, updateWith: NumberPlateUpdate):Promise<T>
-    delete(id:string):Promise<T>
+export type NumberPlateTypes = "id" | "is_tenant" | "number_plate"
+
+export interface INumberPlateRepository extends Repository<NumberPlate, NewNumberPlate, NumberPlateUpdate> {
+    findBy(type:NumberPlateTypes, value:string):Promise<NumberPlate | undefined>
 }
