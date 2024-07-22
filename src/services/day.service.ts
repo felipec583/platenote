@@ -1,18 +1,19 @@
-import { Day, NewDay } from "../types/schema";
 import { DayRepository } from "../repositories/day/dayRepository.js";
-import { newFormattedDate } from "../common/utils/formatDate.js";
-  
-export class DayService {
+import { getNewFormattedDate } from "../common/utils/formatDate.js";
 
-  constructor (private readonly dayRepository:DayRepository){}
+export class DayService {
+  constructor(private readonly dayRepository: DayRepository) {}
 
   async createNewDay() {
-    const dayCheck = new Date().toLocaleDateString("es-CL");
-    const foundCurrentDay = await this.dayRepository.find("date", dayCheck );
+    const dayCheck = getNewFormattedDate();
+    const foundCurrentDay = await this.dayRepository.findBy("date", dayCheck);
     if (foundCurrentDay) {
-      throw new Error("This day already exists");
+      return foundCurrentDay;
     }
-    const newDay = await this.dayRepository.create({date:newFormattedDate()});
+    const newDay = await this.dayRepository.create({
+      date: getNewFormattedDate(),
+    });
+
     return newDay;
   }
 }
