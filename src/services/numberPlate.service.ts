@@ -1,35 +1,34 @@
+import { testPlatePattern } from "../common/utils/testPlatePattern.js";
 import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
-import { NumberPlate } from "../types/schema";
-
+import { NewNumberPlate } from "../types/schema";
 
 export class NumberPlateService {
+  constructor(private readonly numberPlateRepository: NumberPlateRepository) {}
 
-  constructor (private readonly NumberPlateRepository: NumberPlateRepository) {
-  }
-
-  async createNumberPlate(numberPlate: NumberPlate) {
-    return this.NumberPlateRepository.create(numberPlate);
+  async create(numberPlate: NewNumberPlate) {
+    const checkPlatePattern = testPlatePattern(numberPlate.number_plate);
+    if (!checkPlatePattern)
+      throw new Error("You must enter a valid number plate");
+    return this.numberPlateRepository.create(numberPlate);
   }
 
   async getAllNumberPlates() {
-    return this.NumberPlateRepository.findAll();
+    return this.numberPlateRepository.findAll();
   }
 
-  async getNumberPlateByName(id:string) {
-    return this.NumberPlateRepository.findById(id);
+  async getNumberPlateByName(plate: string) {
+    return this.numberPlateRepository.findBy("number_plate", plate);
   }
 
-  async deleteNumberPlate(id:string) {
-    return this.NumberPlateRepository.delete(id);
+  async deleteNumberPlate(id: string) {
+    return this.numberPlateRepository.delete(id);
   }
 
-  async changeTenantStatus(id:string) {
-    const numberPlateTenant = await this.NumberPlateRepository.findById(id);
+  async changeTenantStatus(id: string) {
+    const numberPlateTenant = await this.numberPlateRepository.findBy("id", id);
     console.log(numberPlateTenant);
     if (!numberPlateTenant) throw new Error("wrong");
     numberPlateTenant.is_tenant = !numberPlateTenant?.is_tenant as boolean;
-    return this.NumberPlateRepository.update(id, numberPlateTenant);
+    return this.numberPlateRepository.update(id, numberPlateTenant);
   }
 }
-
-
