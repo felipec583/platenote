@@ -46,4 +46,6 @@ const TIME = {
   END_MORNING
 };
 
-export { dbConnection, ENVIRONMENT, PORT, TIME };
+const PLATE_PATTERN = /^([A-Z]{2}\d{4}|[A-Z]{4}\d{2})$/;
+
+export { dbConnection, ENVIRONMENT, PORT, TIME, PLATE_PATTERN };
