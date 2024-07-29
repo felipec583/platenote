@@ -26,5 +26,9 @@ module.exports = {
     "linebreak-style": ["error", "windows"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
+    "max-len": [
+      "error",
+      { code: 80, ignorePattern: "^import .*|(\\s*it\\([^)]*\\))" },
+    ],
   },
 };
