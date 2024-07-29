@@ -1,7 +1,12 @@
+import { ListsDTO, PlateListDTO } from "../../DTO/numberPlateList.dto";
 import { NewPlateList, PlateList, PlateListUpdate } from "../../types/schema";
 import { Repository } from "../genericRepository";
 
 export type NumberPlateListTypes = "day_id" | "shift_id" | "id";
+
+export type PlateListId = {
+  id: string;
+};
 
 export interface INumberPlateListRepository
   extends Repository<PlateList, NewPlateList, PlateListUpdate> {
@@ -12,5 +17,7 @@ export interface INumberPlateListRepository
   getPlateListIdByDayAndShift(
     date: string,
     shift: number
-  ): Promise<{ id: string } | undefined>;
+  ): Promise<PlateListId | undefined>;
+  getCurrentList(shift: number): Promise<PlateListDTO[] | []>;
+  getListsByShift(shift: number): Promise<ListsDTO[] | []>;
 }

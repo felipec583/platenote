@@ -3,7 +3,9 @@ import {
   NumberPlateListTypes,
 } from "./numberPlateListRepository.interface";
 import { db } from "../../config/database.js";
-import { NewPlateList, NumberPlateUpdate } from "../../types/schema";
+import { NewPlateList, PlateListUpdate } from "../../types/schema";
+import { sql } from "kysely";
+
 export class NumberPlateListRepository implements INumberPlateListRepository {
   async create(plateList: NewPlateList) {
     return await db
@@ -23,13 +25,13 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return await db
       .selectFrom("plate_list")
       .selectAll()
-      .where(`${type}`, "=", value)
+      .where(type, "=", value)
       .executeTakeFirst();
   }
 
-  async update(id: string, entity: NumberPlateUpdate) {
+  async update(id: string, entity: PlateListUpdate) {
     return await db
-      .updateTable("number_plate")
+      .updateTable("plate_list")
       .set(entity)
       .where("id", "=", id)
       .execute();
@@ -37,7 +39,8 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
 
   async findById(id: string) {
     return await db
-      .selectFrom("number_plate")
+      .selectFrom("plate_list")
+      .selectAll()
       .where("id", "=", id)
       .executeTakeFirst();
   }
@@ -53,7 +56,32 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       .executeTakeFirst();
   }
 
+  async getCurrentList(shift: number) {
+    return await db
+      .selectFrom("number_plate as np")
+      .innerJoin("plate_entry as pe", "pe.plate_id", "np.id")
+      .innerJoin("plate_list as pl", "pe.plate_list_id", "pl.id")
+      .innerJoin("day as d", "d.id", "pl.day_id")
+      .select([
+        "np.number_plate",
+        "pe.is_registered",
+        "pe.has_left",
+        "np.is_tenant",
+      ])
+      .where(sql`d.date`, "=", sql`CURRENT_DATE`)
+      .where("pl.shift_id", "=", shift)
+      .execute();
+  }
   async findAll() {
     return await db.selectFrom("plate_list").selectAll().execute();
+  }
+
+  async getListsByShift(shift: number) {
+    return await db
+      .selectFrom("plate_list as pl")
+      .innerJoin("day as d", "d.id", "pl.day_id")
+      .select(["pl.id", "d.date"])
+      .where("pl.shift_id", "=", shift)
+      .execute();
   }
 }
