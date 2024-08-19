@@ -1,4 +1,5 @@
 import {
+  changeStatusParams,
   INumberPlateEntryRepository,
   NumberEntryValuesType,
 } from "./numberPlateEntryRepository.interface";
@@ -34,11 +35,14 @@ export class NumberPlateEntryRepository implements INumberPlateEntryRepository {
     return await db.selectFrom("plate_entry").selectAll().execute();
   }
 
-  async findBy(type: NumberEntryValuesType, value: string) {
+  async findBy(type: NumberEntryValuesType[], value: string[]) {
+    const [firstType, secondType] = type;
+    const [firstValue, secondValue] = value;
     return await db
       .selectFrom("plate_entry")
       .selectAll()
-      .where(`${type}`, "=", value)
+      .where(`${firstType}`, "=", firstValue)
+      .where(`${secondType}`, "=", secondValue)
       .executeTakeFirst();
   }
 
@@ -48,5 +52,16 @@ export class NumberPlateEntryRepository implements INumberPlateEntryRepository {
       .values(entity)
       .returningAll()
       .executeTakeFirstOrThrow();
+  }
+
+  async changeStatus(params: changeStatusParams) {
+    const { type, value, entryId, numberPlateId } = params;
+    return await db
+      .updateTable("plate_entry")
+      .set(type, value)
+      .where("plate_id", "=", numberPlateId)
+      .where("id", "=", entryId)
+      .returning(["plate_id", type])
+      .executeTakeFirst();
   }
 }
