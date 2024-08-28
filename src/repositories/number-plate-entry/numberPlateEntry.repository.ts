@@ -16,6 +16,7 @@ export class NumberPlateEntryRepository implements INumberPlateEntryRepository {
       .updateTable("plate_entry")
       .set(entity)
       .where("id", "=", id)
+      .returningAll()
       .execute();
   }
   async delete(id: string) {

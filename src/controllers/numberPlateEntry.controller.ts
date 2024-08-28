@@ -77,4 +77,21 @@ export class NumberPlateEntryController {
       next(error);
     }
   }
+
+  async changeNumberPlate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { currentNumberPlate, newNumberPlate } = req.body;
+
+      const updatedNumberPlate =
+        await this.numberPlateEntryService.changeNumberPlate(
+          currentNumberPlate,
+          newNumberPlate
+        );
+
+      return res.status(200).json({ newNumberPlate: updatedNumberPlate });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 }

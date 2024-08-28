@@ -83,7 +83,28 @@ export class NumberPlateEntryService {
 
     return newStatus;
   }
-  async changeNumberPlate(currentNumberPlate: string, newNumberPlate: string) {}
+  async changeNumberPlate(currentNumberPlate: string, newNumberPlate: string) {
+    const { foundPlateEntry } = await this.findNumberPlateInCurrentList(
+      currentNumberPlate
+    );
+
+    const foundNewNumberPlate =
+      await this.numberPlateService.getNumberPlateByName(newNumberPlate);
+
+    let newPlate;
+    if (!foundNewNumberPlate) {
+      newPlate = await this.numberPlateService.create({
+        number_plate: newNumberPlate,
+      });
+    }
+
+    const updatedNumberPlate = await this.numberPlateEntryRepository.update(
+      foundPlateEntry.id,
+      { plate_id: foundNewNumberPlate?.id || newPlate?.id }
+    );
+
+    return updatedNumberPlate;
+  }
 
   async findNumberPlateInCurrentList(numberPlate: string) {
     const foundNumberPlate = await this.numberPlateService.getNumberPlateByName(
