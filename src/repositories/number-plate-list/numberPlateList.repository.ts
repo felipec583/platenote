@@ -5,6 +5,8 @@ import {
 import { db } from "../../config/database.js";
 import { NewPlateList, PlateListUpdate } from "../../types/schema";
 import { sql } from "kysely";
+import { SEVEN_DAYS, CURRENT_DATE } from "../../common/constants.js";
+import { getDateRange } from "../../common/helpers/getDateRange.js";
 
 export class NumberPlateListRepository implements INumberPlateListRepository {
   async create(plateList: NewPlateList) {
@@ -45,6 +47,10 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       .executeTakeFirst();
   }
 
+  async findAll() {
+    return await db.selectFrom("plate_list").selectAll().execute();
+  }
+
   async getPlateListIdByDayAndShift(date: string, shift: number) {
     const formattedDate = new Date(date);
     return await db
@@ -57,7 +63,7 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
   }
 
   async getCurrentList(shift: number) {
-    return await db
+    const currentList = await db
       .selectFrom("number_plate as np")
       .innerJoin("plate_entry as pe", "pe.plate_id", "np.id")
       .innerJoin("plate_list as pl", "pe.plate_list_id", "pl.id")
@@ -71,9 +77,30 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       .where(sql`d.date`, "=", sql`CURRENT_DATE`)
       .where("pl.shift_id", "=", shift)
       .execute();
+
+    return currentList;
   }
-  async findAll() {
-    return await db.selectFrom("plate_list").selectAll().execute();
+
+  async findLists(
+    shift: number,
+    startDate: Date | undefined,
+    endDate: Date | undefined
+  ) {
+    let first = SEVEN_DAYS;
+    let end = CURRENT_DATE;
+    const ranges = getDateRange(startDate, endDate);
+    if (ranges) {
+      first = ranges.start;
+      end = ranges.end;
+    }
+    return await db
+      .selectFrom("plate_list as pl")
+      .innerJoin("day as d", "d.id", "pl.day_id")
+      .select(["pl.id", "d.date", "pl.shift_id"])
+      .where("pl.shift_id", "=", shift)
+      .where((eb) => eb.between("d.date", first, end))
+      .orderBy("d.date", "desc")
+      .execute();
   }
 
   async getListsByShift(shift: number) {

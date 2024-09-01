@@ -1,4 +1,4 @@
-import { ListsDTO, PlateListDTO } from "../../DTO/numberPlateList.dto";
+import { ListDTO, ListsDTO, PlateListDTO } from "../../DTO/numberPlateList.dto";
 import { NewPlateList, PlateList, PlateListUpdate } from "../../types/schema";
 import { Repository } from "../genericRepository";
 
@@ -20,4 +20,9 @@ export interface INumberPlateListRepository
   ): Promise<PlateListId | undefined>;
   getCurrentList(shift: number): Promise<PlateListDTO[] | []>;
   getListsByShift(shift: number): Promise<ListsDTO[] | []>;
+  findLists(
+    shift: number,
+    startDate: Date | undefined,
+    endDate: Date | undefined
+  ): Promise<ListDTO[] | []>;
 }

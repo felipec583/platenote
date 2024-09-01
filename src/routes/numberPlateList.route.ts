@@ -7,6 +7,11 @@ router.post(
   "/",
   numberPlateListController.createPlateList.bind(numberPlateListController)
 );
+
+router.get(
+  "/",
+  numberPlateListController.getLists.bind(numberPlateListController)
+);
 router.get(
   "/current",
   numberPlateListController.getCurrentList.bind(numberPlateListController)

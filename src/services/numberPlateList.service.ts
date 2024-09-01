@@ -18,6 +18,22 @@ export class NumberPlateListService {
     return await this.numberPlateListRepository.create(platelist);
   }
 
+  async findLists(
+    shift: number,
+    startDate: string | undefined,
+    endDate: string | undefined
+  ) {
+    const start = startDate ? new Date(startDate) : undefined;
+    const end = endDate ? new Date(endDate) : undefined;
+    const lists = await this.numberPlateListRepository.findLists(
+      shift,
+      start,
+      end
+    );
+
+    return lists;
+  }
+
   async getCurrentList() {
     return await this.numberPlateListRepository.getCurrentList(getShift());
   }

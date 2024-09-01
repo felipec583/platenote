@@ -4,6 +4,18 @@ import { Request, Response, NextFunction } from "express";
 import { Day } from "../types/schema";
 import { getShift } from "../common/helpers/getShift.js";
 
+interface RequestParams {}
+
+interface ResponseBody {}
+
+interface RequestBody {}
+
+interface RequestQuery {
+  shift: number | undefined;
+  start_date: string | undefined;
+  end_date: string | undefined;
+}
+
 export class NumberPlateListController {
   constructor(
     private readonly platelistService: NumberPlateListService,
@@ -59,6 +71,28 @@ export class NumberPlateListController {
       const { id } = req.params;
       const list = await this.platelistService.delete(id);
       res.status(200).json({ deletedList: list });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getLists(
+    req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const query: RequestQuery = req.query;
+
+      let chosenShift = Number(query.shift);
+      if (!query.shift) chosenShift = getShift();
+      const lists = await this.platelistService.findLists(
+        chosenShift,
+        query.start_date,
+        query.end_date
+      );
+
+      return res.status(200).json(lists);
     } catch (error) {
       next(error);
     }
