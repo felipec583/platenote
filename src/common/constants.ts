@@ -43,9 +43,21 @@ const TIME = {
   START_EVENING,
   START_MORNING,
   END_EVENING,
-  END_MORNING
+  END_MORNING,
 };
+
+const CURRENT_DATE = new Date();
+const SEVEN_DAYS = new Date(CURRENT_DATE);
+SEVEN_DAYS.setDate(CURRENT_DATE.getDate() - 7);
 
 const PLATE_PATTERN = /^([A-Z]{2}\d{4}|[A-Z]{4}\d{2})$/;
 
-export { dbConnection, ENVIRONMENT, PORT, TIME, PLATE_PATTERN };
+export {
+  dbConnection,
+  ENVIRONMENT,
+  PORT,
+  TIME,
+  PLATE_PATTERN,
+  CURRENT_DATE,
+  SEVEN_DAYS,
+};
