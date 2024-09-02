@@ -1,3 +1,4 @@
+import { HttpError } from "../common/helpers/error.js";
 import { testPlatePattern } from "../common/utils/testPlatePattern.js";
 import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
 import { NewNumberPlate } from "../types/schema";
@@ -8,7 +9,7 @@ export class NumberPlateService {
   async create(numberPlate: NewNumberPlate) {
     const checkPlatePattern = testPlatePattern(numberPlate.number_plate);
     if (!checkPlatePattern)
-      throw new Error("You must enter a valid number plate");
+      throw new HttpError("You must enter a valid number plate");
     return this.numberPlateRepository.create(numberPlate);
   }
 
@@ -26,9 +27,13 @@ export class NumberPlateService {
 
   async changeTenantStatus(id: string) {
     const numberPlateTenant = await this.numberPlateRepository.findBy("id", id);
-    console.log(numberPlateTenant);
-    if (!numberPlateTenant) throw new Error("wrong");
+    if (!numberPlateTenant)
+      throw new HttpError("This number plate does not exist");
     numberPlateTenant.is_tenant = !numberPlateTenant?.is_tenant as boolean;
-    return this.numberPlateRepository.update(id, numberPlateTenant);
+    const updatedNumberPlate = this.numberPlateRepository.update(
+      id,
+      numberPlateTenant
+    );
+    return updatedNumberPlate;
   }
 }

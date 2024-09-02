@@ -39,6 +39,7 @@ export class NumberPlateRepository implements INumberPlateRepository {
       .updateTable("number_plate")
       .set(updateWith)
       .where("id", "=", id)
+      .returning(["number_plate", "is_tenant"])
       .execute();
     return query;
   }
