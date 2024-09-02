@@ -30,5 +30,6 @@ module.exports = {
       "error",
       { code: 80, ignorePattern: "^import .*|(\\s*it\\([^)]*\\))" },
     ],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
 };
