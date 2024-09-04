@@ -8,6 +8,12 @@ export type PlateListId = {
   id: string;
 };
 
+export interface FindListsParams {
+  shift: number;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+}
+
 export interface INumberPlateListRepository
   extends Repository<PlateList, NewPlateList, PlateListUpdate> {
   findBy(
@@ -20,9 +26,5 @@ export interface INumberPlateListRepository
   ): Promise<PlateListId | undefined>;
   getCurrentList(shift: number): Promise<PlateListDTO[] | []>;
   getListsByShift(shift: number): Promise<ListsDTO[] | []>;
-  findLists(
-    shift: number,
-    startDate: Date | undefined,
-    endDate: Date | undefined
-  ): Promise<ListDTO[] | []>;
+  findLists(params: FindListsParams): Promise<ListDTO[] | []>;
 }

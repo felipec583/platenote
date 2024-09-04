@@ -1,4 +1,5 @@
 import {
+  FindListsParams,
   INumberPlateListRepository,
   NumberPlateListTypes,
 } from "./numberPlateListRepository.interface";
@@ -41,10 +42,18 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
 
   async findById(id: string) {
     return await db
-      .selectFrom("plate_list")
-      .selectAll()
-      .where("id", "=", id)
-      .executeTakeFirst();
+      .selectFrom("number_plate as np")
+      .innerJoin("plate_entry as pe", "pe.plate_id", "np.id")
+      .innerJoin("plate_list as pl", "pe.plate_list_id", "pl.id")
+      .innerJoin("day as d", "d.id", "pl.day_id")
+      .select([
+        "np.number_plate",
+        "pe.is_registered",
+        "pe.has_left",
+        "np.is_tenant",
+      ])
+      .where("pl.id", "=", id)
+      .execute();
   }
 
   async findAll() {
@@ -81,11 +90,8 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return currentList;
   }
 
-  async findLists(
-    shift: number,
-    startDate: Date | undefined,
-    endDate: Date | undefined
-  ) {
+  async findLists(params: FindListsParams) {
+    const { shift, startDate, endDate } = params;
     let first = SEVEN_DAYS;
     let end = CURRENT_DATE;
     const ranges = getDateRange(startDate, endDate);
