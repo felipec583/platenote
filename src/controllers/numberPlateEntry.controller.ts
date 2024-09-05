@@ -49,7 +49,7 @@ export class NumberPlateEntryController {
 
       return res
         .status(200)
-        .json({ numberPlate, hasLeft: updatedStatus?.has_left });
+        .json({ numberPlate, message: updatedStatus });
     } catch (error) {
       next(error);
     }
@@ -70,9 +70,7 @@ export class NumberPlateEntryController {
         is_registered
       );
 
-      return res
-        .status(200)
-        .json({ numberPlate, isRegistered: updatedStatus?.is_registered });
+      return res.status(200).json({ numberPlate, message: updatedStatus });
     } catch (error) {
       next(error);
     }
