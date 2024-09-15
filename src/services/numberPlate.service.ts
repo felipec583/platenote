@@ -2,9 +2,13 @@ import { HttpError } from "../common/helpers/error.js";
 import { testPlatePattern } from "../common/utils/testPlatePattern.js";
 import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
 import { NewNumberPlate } from "../types/schema";
+// import { NumberPlateListService } from "./numberPlateList.service.js";
 
 export class NumberPlateService {
-  constructor(private readonly numberPlateRepository: NumberPlateRepository) {}
+  constructor(
+    private readonly numberPlateRepository: NumberPlateRepository,
+    // private readonly numberPlateListService: NumberPlateListService
+  ) {}
 
   async create(numberPlate: NewNumberPlate) {
     const checkPlatePattern = testPlatePattern(numberPlate.number_plate);
@@ -19,6 +23,10 @@ export class NumberPlateService {
 
   async getNumberPlateByName(plate: string) {
     return this.numberPlateRepository.findBy("number_plate", plate);
+  }
+
+  async findNumberPlateByPattern(pattern: string) {
+    return this.numberPlateRepository.findNumberPlatesByPrefix(pattern);
   }
 
   async deleteNumberPlate(id: string) {

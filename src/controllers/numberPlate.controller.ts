@@ -1,5 +1,6 @@
 import { NumberPlateService } from "../services/numberPlate.service.js";
 import { Request, Response, NextFunction } from "express";
+import { CustomRequest, SearchPlateRequestQuery } from "../types/main.js";
 export class NumberPlateController {
   constructor(private readonly numberPlateService: NumberPlateService) {}
 
@@ -12,6 +13,21 @@ export class NumberPlateController {
     }
   }
 
+  async getNumberPlatesByPattern(
+    req: CustomRequest<SearchPlateRequestQuery>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { query } = req.query;
+      const foundNumberPlates =
+        await this.numberPlateService.findNumberPlateByPattern(query);
+
+      return res.status(200).json({ plates: foundNumberPlates });
+    } catch (error) {
+      next(error);
+    }
+  }
   async getPlateNumber(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;

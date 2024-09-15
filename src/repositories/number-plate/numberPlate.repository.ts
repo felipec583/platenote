@@ -4,7 +4,7 @@ import {
   INumberPlateRepository,
   NumberPlateTypes,
 } from "../number-plate/numberPlateRepository.interface";
-
+import { sql } from "kysely";
 export class NumberPlateRepository implements INumberPlateRepository {
   async findById(id: string): Promise<object | undefined> {
     return await db
@@ -18,10 +18,23 @@ export class NumberPlateRepository implements INumberPlateRepository {
     return await db
       .selectFrom("number_plate")
       .selectAll()
-      .where(`${type}`, "=", value)
+      .where(type, "=", value)
       .executeTakeFirst();
   }
 
+  async findNumberPlatesByPrefix(prefix: string) {
+    const matchedNumberPlates = await db
+      .selectFrom("number_plate")
+      .select("number_plate")
+      .where(sql`number_plate`, "ilike", prefix + "%")
+      .limit(5)
+      .execute();
+
+    const stringOnlyNumberPlates = matchedNumberPlates.map(
+      (v) => v.number_plate
+    );
+    return stringOnlyNumberPlates;
+  }
   async findAll() {
     return await db.selectFrom("number_plate").selectAll().execute();
   }
