@@ -22,15 +22,22 @@ export interface RequestBody {}
 
 type RequestQuery<T> = GenericQuery<T>;
 
+type CustomRequest<Q> = Request<RequestParams, ResponseBody, RequestBody, Q>;
+
 interface FindListsQuery {
   shift: number | undefined;
-
   start_date: string | undefined;
 
   end_date: string | undefined;
 }
 
+interface SearchPlateQuery {
+  query: string;
+}
+
 export type FindListsRequestQuery = RequestQuery<FindListsQuery>;
+
+export type SearchPlateRequestQuery = RequestQuery<SearchPlateQuery>;
 
 type GenericQuery<T> = {
   [K in keyof T]: T[K];
