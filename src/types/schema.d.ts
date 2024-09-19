@@ -38,7 +38,7 @@ export type Shift = Selectable<ShiftTable>;
 export interface NumberPlateTable {
   id: Generated<string>;
   number_plate: string;
-  is_tenant: boolean;
+  is_tenant: ColumnType<boolean, boolean | undefined, boolean>;
 }
 
 export type NumberPlate = Selectable<NumberPlateTable>;
@@ -68,8 +68,8 @@ export interface PlateEntryTable {
   id: Generated<string>;
   plate_id: string;
   plate_list_id: string;
-  is_resitered: boolean;
-  has_left: boolean;
+  is_registered: ColumnType<boolean, boolean | undefined, boolean | undefined >;
+  has_left: ColumnType<boolean, boolean | undefined, boolean | undefined >;
   created_by: string;
 }
 
