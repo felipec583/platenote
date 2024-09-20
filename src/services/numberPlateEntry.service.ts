@@ -57,8 +57,6 @@ export class NumberPlateEntryService {
   }
 
   async delete(numberPlate: string) {
-    // Get current list id
-    // Find entry by the number plate and current list id
     const { foundPlateEntry } = await this.findNumberPlateInCurrentList(
       numberPlate
     );
@@ -68,16 +66,13 @@ export class NumberPlateEntryService {
   async changeStatus(numberPlate: string, type: statusType) {
     const { foundPlateEntry, foundNumberPlate } =
       await this.findNumberPlateInCurrentList(numberPlate);
-    /* 
-    You can't change hasLeft unless it is already registered or it is a tenant
-    */
     const { id: entryId, plate_id: numberPlateId } = foundPlateEntry;
-
-    if (!foundPlateEntry.is_registered && type === "has_left")
-      throw new HttpError("You should check if the plate is registered", 400);
 
     if (foundNumberPlate.is_tenant) return "This number plate is a tenant";
     const value = !foundPlateEntry[type];
+
+    if (!foundPlateEntry.is_registered && type === "has_left")
+      throw new HttpError("You should check if the plate is registered", 400);
 
     const newStatus = await this.numberPlateEntryRepository.changeStatus({
       type,
