@@ -20,9 +20,9 @@ export class NumberPlateListService {
   }
 
   async findLists(
-    shift: number,
-    start: string | undefined,
-    end: string | undefined
+    start?: string | undefined,
+    end?: string | undefined,
+    shift?: number
   ) {
     const startDate = start ? new Date(start) : undefined;
     const endDate = end ? new Date(end) : undefined;
@@ -37,6 +37,12 @@ export class NumberPlateListService {
 
   async getCurrentList() {
     return await this.numberPlateListRepository.getCurrentList(getShift());
+  }
+
+  async getPreviousFromCurrentList() {
+    const previousList = await this.findLists();
+    const { numberPlates } = await this.getListById(previousList[1].id);
+    return numberPlates.map((v) => v.number_plate);
   }
 
   async getListsByShift(shift: number) {
