@@ -4,16 +4,20 @@ import { numberPlateController } from "../controllers/dependencies.js";
 const router = Express.Router();
 router.get(
   "/",
-  numberPlateController.getAllPlateNumbers.bind(numberPlateController)
+  numberPlateController.findAll.bind(numberPlateController)
 );
 
 router.get(
   "/search",
-  numberPlateController.getNumberPlatesByPattern.bind(numberPlateController)
+  numberPlateController.findByPattern.bind(numberPlateController)
+);
+router.get(
+  "/suggestion/search",
+  numberPlateController.findSuggestions.bind(numberPlateController)
 );
 router.get(
   "/:id",
-  numberPlateController.getPlateNumber.bind(numberPlateController)
+  numberPlateController.findById.bind(numberPlateController)
 );
 router.put("/", numberPlateController.updateTenant.bind(numberPlateController));
 

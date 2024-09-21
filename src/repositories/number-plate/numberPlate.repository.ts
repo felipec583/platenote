@@ -22,11 +22,11 @@ export class NumberPlateRepository implements INumberPlateRepository {
       .executeTakeFirst();
   }
 
-  async findNumberPlatesByPrefix(prefix: string) {
+  async findByPattern(pattern: string) {
     const matchedNumberPlates = await db
       .selectFrom("number_plate")
       .select("number_plate")
-      .where(sql`number_plate`, "ilike", prefix + "%")
+      .where(sql`number_plate`, "ilike", pattern + "%")
       .limit(5)
       .execute();
 

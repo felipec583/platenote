@@ -13,4 +13,5 @@ export interface INumberPlateRepository
     type: NumberPlateTypes,
     value: string
   ): Promise<NumberPlate | undefined>;
+  findByPattern(pattern: string): Promise<string[] | []>;
 }
