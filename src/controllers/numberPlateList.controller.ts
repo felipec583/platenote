@@ -3,18 +3,7 @@ import { NumberPlateListService } from "../services/numberPlateList.service";
 import { Request, Response, NextFunction } from "express";
 import { Day } from "../types/schema";
 import { getShift } from "../common/helpers/getShift.js";
-
-interface RequestParams {}
-
-interface ResponseBody {}
-
-interface RequestBody {}
-
-interface RequestQuery {
-  shift: number | undefined;
-  start_date: string | undefined;
-  end_date: string | undefined;
-}
+import { FindListsRequestQuery, CustomRequest } from "../types/main";
 
 export class NumberPlateListController {
   constructor(
@@ -22,7 +11,7 @@ export class NumberPlateListController {
     private readonly dayService: DayService
   ) {}
 
-  async createPlateList(_req: Request, res: Response, next: NextFunction) {
+  async create(_req: Request, res: Response, next: NextFunction) {
     try {
       const newDay: Day = await this.dayService.createNewDay();
       const dayId = newDay.id as string;
@@ -37,30 +26,44 @@ export class NumberPlateListController {
     }
   }
 
-  async getCurrentList(_req: Request, res: Response, next: NextFunction) {
+  async findCurrent(_req: Request, res: Response, next: NextFunction) {
     try {
-      const currentList = await this.platelistService.getCurrentList();
+      const currentList = await this.platelistService.findCurrent();
       return res.status(200).json(currentList);
     } catch (error) {
       next(error);
     }
   }
 
-  async getListsByShift(req: Request, res: Response, next: NextFunction) {
+  async findByShift(req: Request, res: Response, next: NextFunction) {
     try {
       const { shift } = req.body;
-      const listsByShift = await this.platelistService.getListsByShift(shift);
+      const listsByShift = await this.platelistService.findByShift(shift);
       return res.status(200).json(listsByShift);
     } catch (error) {
       next(error);
     }
   }
 
-  async getListById(req: Request, res: Response, next: NextFunction) {
+  async findById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const plateList = await this.platelistService.getListById(id);
+      const plateList = await this.platelistService.findById(id);
       return res.status(200).json(plateList);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async findPreviousFromCurrentList(
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const previousList =
+        await this.platelistService.findPreviousFromCurrentList();
+      return res.status(200).json(previousList);
     } catch (error) {
       next(error);
     }
@@ -76,20 +79,19 @@ export class NumberPlateListController {
     }
   }
 
-  async getLists(
-    req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>,
+  async findLists(
+    req: CustomRequest<FindListsRequestQuery>,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const query: RequestQuery = req.query;
+      const query: FindListsRequestQuery = req.query;
 
-      let chosenShift = Number(query.shift);
-      if (!query.shift) chosenShift = getShift();
+      const chosenShift = Number(query.shift);
       const lists = await this.platelistService.findLists(
-        chosenShift,
         query.start_date,
-        query.end_date
+        query.end_date,
+        chosenShift
       );
 
       return res.status(200).json(lists);

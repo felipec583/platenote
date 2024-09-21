@@ -28,7 +28,7 @@ export class NumberPlateService {
   async findSuggestions(pattern: string) {
     const matchingElementsFromDatabse = await this.findFromDatabase(pattern);
     const previousListMatch = (
-      await this.numberPlateListService.getPreviousFromCurrentList()
+      await this.numberPlateListService.findPreviousFromCurrentList()
     ).filter((v) => v.startsWith(pattern.toUpperCase()));
 
     const mergedLists = [

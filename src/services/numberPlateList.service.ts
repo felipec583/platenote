@@ -11,7 +11,7 @@ export class NumberPlateListService {
 
   async create(platelist: NewPlateList) {
     const foundPlateListId =
-      await this.numberPlateListRepository.getPlateListIdByDayAndShift(
+      await this.numberPlateListRepository.findIdByDayAndShift(
         getNewFormattedDate(),
         getShift()
       );
@@ -26,7 +26,7 @@ export class NumberPlateListService {
   ) {
     const startDate = start ? new Date(start) : undefined;
     const endDate = end ? new Date(end) : undefined;
-    const lists = await this.numberPlateListRepository.findLists({
+    const lists = await this.numberPlateListRepository.findByDateRangeOrShift({
       shift,
       startDate,
       endDate,
@@ -35,21 +35,21 @@ export class NumberPlateListService {
     return lists;
   }
 
-  async getCurrentList() {
-    return await this.numberPlateListRepository.getCurrentList(getShift());
+  async findCurrent() {
+    return await this.numberPlateListRepository.findCurrent(getShift());
   }
 
-  async getPreviousFromCurrentList() {
+  async findPreviousFromCurrentList() {
     const previousList = await this.findLists();
-    const { numberPlates } = await this.getListById(previousList[1].id);
+    const { numberPlates } = await this.findById(previousList[1].id);
     return numberPlates.map((v) => v.number_plate);
   }
 
-  async getListsByShift(shift: number) {
-    return await this.numberPlateListRepository.getListsByShift(shift);
+  async findByShift(shift: number) {
+    return await this.numberPlateListRepository.findByShift(shift);
   }
 
-  async getListById(id: string) {
+  async findById(id: string) {
     // Count each based on the boolean value of each property for entry
     const foundList = await this.numberPlateListRepository.findById(id);
     const numberPlatesCount = foundList.length;

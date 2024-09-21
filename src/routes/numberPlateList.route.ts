@@ -5,25 +5,32 @@ const router = Express.Router();
 
 router.post(
   "/",
-  numberPlateListController.createPlateList.bind(numberPlateListController)
+  numberPlateListController.create.bind(numberPlateListController)
 );
 
 router.get(
   "/",
-  numberPlateListController.getLists.bind(numberPlateListController)
+  numberPlateListController.findLists.bind(numberPlateListController)
 );
 router.get(
   "/current",
-  numberPlateListController.getCurrentList.bind(numberPlateListController)
+  numberPlateListController.findCurrent.bind(numberPlateListController)
 );
 router.get(
   "/shift",
-  numberPlateListController.getListsByShift.bind(numberPlateListController)
+  numberPlateListController.findByShift.bind(numberPlateListController)
+);
+
+router.get(
+  "/previous-list",
+  numberPlateListController.findPreviousFromCurrentList.bind(
+    numberPlateListController
+  )
 );
 
 router.get(
   "/:id",
-  numberPlateListController.getListById.bind(numberPlateListController)
+  numberPlateListController.findById.bind(numberPlateListController)
 );
 
 router.delete(

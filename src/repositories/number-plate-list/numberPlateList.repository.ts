@@ -60,7 +60,7 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return await db.selectFrom("plate_list").selectAll().execute();
   }
 
-  async getPlateListIdByDayAndShift(date: string, shift: number) {
+  async findIdByDayAndShift(date: string, shift: number) {
     const formattedDate = new Date(date);
     return await db
       .selectFrom("plate_list as p")
@@ -71,7 +71,7 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       .executeTakeFirst();
   }
 
-  async getCurrentList(shift: number) {
+  async findCurrent(shift: number) {
     const currentList = await db
       .selectFrom("number_plate as np")
       .innerJoin("plate_entry as pe", "pe.plate_id", "np.id")
@@ -90,7 +90,7 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return currentList;
   }
 
-  async findLists(params: FindListsParams) {
+  async findByDateRangeOrShift(params: FindListsParams) {
     const { shift, startDate, endDate } = params;
     let first = SEVEN_DAYS;
     let end = CURRENT_DATE;
@@ -99,17 +99,22 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       first = ranges.start;
       end = ranges.end;
     }
-    return await db
+    let query = db
       .selectFrom("plate_list as pl")
       .innerJoin("day as d", "d.id", "pl.day_id")
       .select(["pl.id", "d.date", "pl.shift_id"])
-      .where("pl.shift_id", "=", shift)
-      .where((eb) => eb.between("d.date", first, end))
-      .orderBy("d.date", "desc")
-      .execute();
+      .where((eb) => eb.between("d.date", first, end));
+
+    if (shift) {
+      query = query.where("pl.shift_id", "=", shift);
+    }
+    // you might also filter by either desc or asc
+    const lists = await query.orderBy("d.date", "desc").execute();
+    console.log(lists);
+    return lists;
   }
 
-  async getListsByShift(shift: number) {
+  async findByShift(shift: number) {
     return await db
       .selectFrom("plate_list as pl")
       .innerJoin("day as d", "d.id", "pl.day_id")

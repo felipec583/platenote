@@ -9,7 +9,7 @@ export type PlateListId = {
 };
 
 export interface FindListsParams {
-  shift: number;
+  shift?: number;
   startDate: Date | undefined;
   endDate: Date | undefined;
 }
@@ -20,11 +20,11 @@ export interface INumberPlateListRepository
     type: NumberPlateListTypes,
     value: string
   ): Promise<PlateList | undefined>;
-  getPlateListIdByDayAndShift(
+  findIdByDayAndShift(
     date: string,
     shift: number
   ): Promise<PlateListId | undefined>;
-  getCurrentList(shift: number): Promise<PlateListDTO[] | []>;
-  getListsByShift(shift: number): Promise<ListsDTO[] | []>;
-  findLists(params: FindListsParams): Promise<ListDTO[] | []>;
+  findCurrent(shift: number): Promise<PlateListDTO[] | []>;
+  findByShift(shift: number): Promise<ListsDTO[] | []>;
+  findByDateRangeOrShift(params: FindListsParams): Promise<ListDTO[] | []>;
 }

@@ -16,7 +16,8 @@ export class NumberPlateEntryService {
   async create(userInput: { created_by: string; number_plate: string }) {
     //tink of better adding the services instead other entities repositories
     const { created_by, number_plate } = userInput;
-    let foundPlate = (await this.numberPlateService.getNumberPlateByName(
+    let foundPlate = (await this.numberPlateService.findBy(
+      "number_plate",
       userInput.number_plate
     )) as NumberPlate;
     if (!foundPlate) {
@@ -26,7 +27,7 @@ export class NumberPlateEntryService {
     }
     const shiftId = getShift();
     const foundPlateList =
-      await this.numberPlateListRepository.getPlateListIdByDayAndShift(
+      await this.numberPlateListRepository.findIdByDayAndShift(
         getNewFormattedDate(),
         shiftId
       );
@@ -89,8 +90,10 @@ export class NumberPlateEntryService {
       currentNumberPlate
     );
 
-    const foundNewNumberPlate =
-      await this.numberPlateService.getNumberPlateByName(newNumberPlate);
+    const foundNewNumberPlate = await this.numberPlateService.findBy(
+      "number_plate",
+      newNumberPlate
+    );
 
     let newPlate;
     if (!foundNewNumberPlate) {
@@ -108,14 +111,15 @@ export class NumberPlateEntryService {
   }
 
   async findNumberPlateInCurrentList(numberPlate: string) {
-    const foundNumberPlate = await this.numberPlateService.getNumberPlateByName(
+    const foundNumberPlate = await this.numberPlateService.findBy(
+      "number_plate",
       numberPlate
     );
 
     if (!foundNumberPlate)
       throw new HttpError("This number plate does not exist");
     const currentList =
-      await this.numberPlateListRepository.getPlateListIdByDayAndShift(
+      await this.numberPlateListRepository.findIdByDayAndShift(
         getNewFormattedDate(),
         getShift()
       );
@@ -129,7 +133,7 @@ export class NumberPlateEntryService {
 
     if (!foundPlateEntry) {
       throw new HttpError(
-        `The entry with the following number plate ${numberPlate} 
+        `The entry with the following number plate ${numberPlate}
         does not exist`
       );
     }
