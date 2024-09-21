@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development node --watch build/app.js",
     "start": "cross-env NODE_ENV=production node build/app.js",
-    "build": "find build -type f \\( -name \"*.js\" -o -name \"*.map\" ) -delete && tsc"
+    "build": "find build -type f \\( -name \"*.js\" -o -name \"*.map\" ) -delete && tsc",
+    "migrate":"node ./build/migrations/migrate.js"
   },
   "keywords": [],
   "author": "Felipe Castillo",
