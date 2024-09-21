@@ -10,30 +10,39 @@ import { NumberPlateController } from "./numberPlate.controller.js";
 import { NumberPlateEntryController } from "./numberPlateEntry.controller.js";
 import { NumberPlateListController } from "./numberPlateList.controller.js";
 
+//REPOSITORIES
+
 const numberPlateRepository = new NumberPlateRepository();
-const numberPlateService = new NumberPlateService(numberPlateRepository);
-export const numberPlateController = new NumberPlateController(
-  numberPlateService
-);
-
 const dayRepository = new DayRepository();
-const dayService = new DayService(dayRepository);
-
 const numberPlateListRepository = new NumberPlateListRepository();
+const numberPlateEntryRepository = new NumberPlateEntryRepository();
+
+
+// SERVICES
+const dayService = new DayService(dayRepository);
 const numberPlateListService = new NumberPlateListService(
   numberPlateListRepository
 );
-export const numberPlateListController = new NumberPlateListController(
-  numberPlateListService,
-  dayService
-);
 
-const numberPlateEntryRepository = new NumberPlateEntryRepository();
+const numberPlateService = new NumberPlateService(
+  numberPlateRepository,
+  numberPlateListService
+);
 const numberPlateEntryService = new NumberPlateEntryService(
   numberPlateEntryRepository,
   numberPlateListRepository,
   numberPlateService
 );
+
+// CONTROLLERS
+export const numberPlateController = new NumberPlateController(
+  numberPlateService
+);
+
 export const numberPlateEntryController = new NumberPlateEntryController(
   numberPlateEntryService
+);
+export const numberPlateListController = new NumberPlateListController(
+  numberPlateListService,
+  dayService
 );
