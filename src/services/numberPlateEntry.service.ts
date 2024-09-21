@@ -64,7 +64,7 @@ export class NumberPlateEntryService {
     return await this.numberPlateEntryRepository.delete(foundPlateEntry.id);
   }
 
-  async changeStatus(numberPlate: string, type: statusType) {
+  async updateStatus(numberPlate: string, type: statusType) {
     const { foundPlateEntry, foundNumberPlate } =
       await this.findNumberPlateInCurrentList(numberPlate);
     const { id: entryId, plate_id: numberPlateId } = foundPlateEntry;
@@ -75,7 +75,7 @@ export class NumberPlateEntryService {
     if (!foundPlateEntry.is_registered && type === "has_left")
       throw new HttpError("You should check if the plate is registered", 400);
 
-    const newStatus = await this.numberPlateEntryRepository.changeStatus({
+    const newStatus = await this.numberPlateEntryRepository.updateStatus({
       type,
       numberPlateId,
       entryId,
@@ -85,7 +85,7 @@ export class NumberPlateEntryService {
     return newStatus;
   }
 
-  async changeNumberPlate(currentNumberPlate: string, newNumberPlate: string) {
+  async updateNumberPlate(currentNumberPlate: string, newNumberPlate: string) {
     const { foundPlateEntry } = await this.findNumberPlateInCurrentList(
       currentNumberPlate
     );

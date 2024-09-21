@@ -55,7 +55,7 @@ export class NumberPlateEntryRepository implements INumberPlateEntryRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async changeStatus(params: changeStatusParams) {
+  async updateStatus(params: changeStatusParams) {
     const { type, value, entryId, numberPlateId } = params;
     return await db
       .updateTable("plate_entry")

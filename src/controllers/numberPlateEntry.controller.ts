@@ -42,7 +42,7 @@ export class NumberPlateEntryController {
 
       const has_left = "has_left";
 
-      const updatedStatus = await this.numberPlateEntryService.changeStatus(
+      const updatedStatus = await this.numberPlateEntryService.updateStatus(
         numberPlate,
         has_left
       );
@@ -65,7 +65,7 @@ export class NumberPlateEntryController {
 
       const is_registered = "is_registered";
 
-      const updatedStatus = await this.numberPlateEntryService.changeStatus(
+      const updatedStatus = await this.numberPlateEntryService.updateStatus(
         numberPlate,
         is_registered
       );
@@ -76,12 +76,12 @@ export class NumberPlateEntryController {
     }
   }
 
-  async changeNumberPlate(req: Request, res: Response, next: NextFunction) {
+  async updateNumberPlate(req: Request, res: Response, next: NextFunction) {
     try {
       const { currentNumberPlate, newNumberPlate } = req.body;
 
       const updatedNumberPlate =
-        await this.numberPlateEntryService.changeNumberPlate(
+        await this.numberPlateEntryService.updateNumberPlate(
           currentNumberPlate,
           newNumberPlate
         );

@@ -28,6 +28,6 @@ router.patch(
 
 router.put(
   "/plate",
-  numberPlateEntryController.changeNumberPlate.bind(numberPlateEntryController)
+  numberPlateEntryController.updateNumberPlate.bind(numberPlateEntryController)
 );
 export default router;

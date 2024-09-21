@@ -26,7 +26,7 @@ export interface INumberPlateEntryRepository
     type: NumberEntryValuesType[],
     value: string[]
   ): Promise<PlateEntry | undefined>;
-  changeStatus(
+  updateStatus(
     params: changeStatusParams
   ): Promise<PlateEntryUpdate | undefined>;
 }
