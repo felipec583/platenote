@@ -27,22 +27,24 @@ export class NumberPlateService {
 
   async findSuggestions(pattern: string) {
     const matchingElementsFromDatabse = await this.findFromDatabase(pattern);
-    const previousListMatch = (
-      await this.numberPlateListService.findPreviousFromCurrentList()
-    ).filter((v) => v.startsWith(pattern.toUpperCase()));
+
+    const previousList =
+      await this.numberPlateListService.findPreviousFromCurrentList();
+
+    if (!previousList) {
+      return matchingElementsFromDatabse;
+    }
 
     const mergedLists = [
-      ...previousListMatch,
-      ...matchingElementsFromDatabse.filter(
-        (v) => !previousListMatch.includes(v)
-      ),
+      ...previousList,
+      ...matchingElementsFromDatabse.filter((v) => !previousList.includes(v)),
     ];
 
-    if (previousListMatch.length < 5) {
+    if (previousList.length < 5) {
       return mergedLists.slice(0, 5);
     }
 
-    return previousListMatch;
+    return previousList;
   }
 
   async findFromDatabase(pattern: string) {
