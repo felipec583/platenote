@@ -40,8 +40,13 @@ export class NumberPlateListService {
   }
 
   async findPreviousFromCurrentList() {
-    const previousList = await this.findLists();
-    const { numberPlates } = await this.findById(previousList[1].id);
+    const currentShift = getShift();
+    const previousShift = currentShift === 1 ? 2 : 1;
+    const previous = await this.numberPlateListRepository.findPreviousList(
+      previousShift
+    );
+    if (!previous) return;
+    const { numberPlates } = await this.findById(previous.id);
     return numberPlates.map((v) => v.number_plate);
   }
 
