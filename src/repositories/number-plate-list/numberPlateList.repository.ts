@@ -8,6 +8,7 @@ import { NewPlateList, PlateListUpdate } from "../../types/schema";
 import { sql } from "kysely";
 import { SEVEN_DAYS, CURRENT_DATE } from "../../common/constants.js";
 import { getDateRange } from "../../common/helpers/getDateRange.js";
+import { ListDTO } from "../../DTO/numberPlateList.dto";
 
 export class NumberPlateListRepository implements INumberPlateListRepository {
   async create(plateList: NewPlateList) {
@@ -90,6 +91,26 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return currentList;
   }
 
+  async findPreviousList(shift: number): Promise<ListDTO | undefined> {
+    let query = db
+      .selectFrom("plate_list as pl")
+      .innerJoin("day as d", "d.id", "pl.day_id")
+      .select(["pl.id", "pl.shift_id", "d.date"]);
+
+    if (shift === 1) {
+      query = query
+        .where(sql`d.date`, "=", sql`CURRENT_DATE`)
+        .where("pl.shift_id", "=", shift);
+    } else {
+      query = query
+        .where(sql`d.date`, "=", sql`CURRENT_DATE - INTERVAL '1 day'`)
+        .where("pl.shift_id", "=", shift);
+    }
+
+    const previousList = await query.execute();
+    return previousList[0];
+  }
+
   async findByDateRangeOrShift(params: FindListsParams) {
     const { shift, startDate, endDate } = params;
     let first = SEVEN_DAYS;
@@ -110,7 +131,6 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     }
     // you might also filter by either desc or asc
     const lists = await query.orderBy("d.date", "desc").execute();
-    console.log(lists);
     return lists;
   }
 
