@@ -1,9 +1,9 @@
-export * from "./user.service";
-export * from "./password.service";
-export * from "./token.service";
-export * from "./numberPlateList.service";
-export * from "./numberPlateEntry.service";
-export * from "./numberPlate.service";
-export * from "./day.service";
+export * from "./user.service.js";
+export * from "./password.service.js";
+export * from "./token.service.js";
+export * from "./numberPlateList.service.js";
+export * from "./numberPlateEntry.service.js";
+export * from "./numberPlate.service.js";
+export * from "./day.service.js";
 
 
