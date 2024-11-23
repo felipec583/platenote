@@ -1,4 +1,4 @@
-import { NumberPlateEntryService } from "../services/numberPlateEntry.service";
+import { NumberPlateEntryService } from "../services/";
 import { NextFunction, Request, Response } from "express";
 
 export class NumberPlateEntryController {
@@ -88,7 +88,6 @@ export class NumberPlateEntryController {
 
       return res.status(200).json({ newNumberPlate: updatedNumberPlate });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

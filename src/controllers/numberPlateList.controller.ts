@@ -1,5 +1,4 @@
-import { DayService } from "../services/day.service";
-import { NumberPlateListService } from "../services/numberPlateList.service";
+import { DayService, NumberPlateListService } from "../services";
 import { Request, Response, NextFunction } from "express";
 import { Day } from "../types/schema";
 import { getShift } from "../common/helpers/getShift.js";
@@ -63,7 +62,7 @@ export class NumberPlateListController {
     try {
       const previousList =
         await this.platelistService.findPreviousFromCurrentList();
-      return res.status(200).json(previousList);
+      return res.status(200).json({ content: previousList ?? "No list" });
     } catch (error) {
       next(error);
     }

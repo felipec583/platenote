@@ -1,4 +1,4 @@
-import { NumberPlateService } from "../services/numberPlate.service.js";
+import { NumberPlateService } from "../services";
 import { Request, Response, NextFunction } from "express";
 import { CustomRequest, SearchPlateRequestQuery } from "../types/main.js";
 export class NumberPlateController {
