@@ -3,7 +3,7 @@ import { NumberPlateEntryRepository } from "../repositories/number-plate-entry/n
 import { getShift } from "../common/helpers/getShift.js";
 import { NumberPlateListRepository } from "../repositories/number-plate-list/numberPlateList.repository";
 import { getNewFormattedDate } from "../common/utils/formatDate.js";
-import { NumberPlateService } from "./numberPlate.service";
+import { NumberPlateService } from "./";
 import { HttpError } from "../common/helpers/error.js";
 import { statusType } from "../repositories/number-plate-entry/numberPlateEntryRepository.interface";
 

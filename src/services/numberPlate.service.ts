@@ -3,7 +3,7 @@ import { testPlatePattern } from "../common/utils/testPlatePattern.js";
 import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
 import { NumberPlateTypes } from "../repositories/number-plate/numberPlateRepository.interface.js";
 import { NewNumberPlate } from "../types/schema";
-import { NumberPlateListService } from "./numberPlateList.service.js";
+import { NumberPlateListService } from "./";
 
 export class NumberPlateService {
   constructor(
