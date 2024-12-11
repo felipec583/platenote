@@ -1,6 +1,3 @@
-import { errorMiddleware } from "./error.middleware.js";
-import { loggerMiddleware } from "./logger.middleware.js";
-export const middleware = {
-  errorMiddleware,
-  loggerMiddleware,
-};
+export * from "./error.middleware.js";
+export * from "./logger.middleware.js";
+export * from "./validator.middleware.js";
