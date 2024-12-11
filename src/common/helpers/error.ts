@@ -1,3 +1,5 @@
+import { ZodError } from "zod";
+import { PSQL_ERRORS } from "../psql_error_mapping.js";
 export interface GenericErrorI {
   statusCode: number;
   message: string;
@@ -30,4 +32,24 @@ export class HttpError extends BaseError {
   }
 }
 
-// export class ValidationError extends BaseError {}
+export class ValidationError extends ZodError {}
+
+export class DatabaseError extends BaseError {
+  public readonly instance: string = "";
+  public readonly statusCode: number = 0;
+  constructor(public readonly code: string, public readonly detail: string) {
+    super(detail);
+    this.code = code;
+    this.detail = detail;
+  }
+
+  getFormattedError(instance: string): GenericErrorI {
+    const formattedInstance = instance.split("/").pop();
+    const errorContent = PSQL_ERRORS.get(this.code);
+    return {
+      statusCode: errorContent?.statusCode ?? 400,
+      message: errorContent?.message ?? this.detail,
+      instance: `/${formattedInstance}`,
+    };
+  }
+}
