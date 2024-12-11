@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 
 import { BaseError } from "../common/helpers/error";
+import { ZodError } from "zod";
 
 type RequestHandler = (req: Request, res: Response, next: NextFunction) => void;
 
 type ErrorHandler = (
-  error: Error | BaseError,
+  error: Error | BaseError | ZodError,
 
   req: Request,
 

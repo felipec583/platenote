@@ -13,15 +13,18 @@ export interface Database {
   day: DayTable;
   plate_entry: PlateEntryTable;
   plate_list: PlateListTable;
+  refresh_token: RefreshTokenTable;
 }
 
 export interface UserTable {
   id: Generated<string>;
-  username: string;
   email: string;
   password: string;
-  role: "operator" | "admin";
-  refresh_token: string;
+  role: ColumnType<
+    string,
+    "operator" | "admin" | undefined,
+    "operator" | "admin" | undefined
+  >;
 }
 
 export type User = Selectable<UserTable>;
@@ -62,17 +65,29 @@ export interface PlateListTable {
 
 export type PlateList = Selectable<PlateListTable>;
 export type NewPlateList = Insertable<PlateListTable>;
-export type PlateListUpdate = Updateable<PlateListTable>
+export type PlateListUpdate = Updateable<PlateListTable>;
 
 export interface PlateEntryTable {
   id: Generated<string>;
   plate_id: string;
   plate_list_id: string;
-  is_registered: ColumnType<boolean, boolean | undefined, boolean | undefined >;
-  has_left: ColumnType<boolean, boolean | undefined, boolean | undefined >;
+  is_registered: ColumnType<boolean, boolean | undefined, boolean | undefined>;
+  has_left: ColumnType<boolean, boolean | undefined, boolean | undefined>;
   created_by: string;
 }
 
 export type PlateEntry = Selectable<PlateEntryTable>;
 export type NewPlateEntry = Insertable<PlateEntryTable>;
 export type PlateEntryUpdate = Updateable<PlateEntryTable>;
+
+export interface RefreshTokenTable {
+  id: Generated<string>;
+  token: string;
+  user_id: string;
+  device_id: string;
+  issued_at: string;
+  expires_at: string;
+}
+export type RefreshToken = Selectable<RefreshTokenTable>;
+export type NewRefreshToken = Insertable<RefreshTokenTable>;
+export type RefreshTokenUpdate = Updateable<RefreshTokenTable>;
