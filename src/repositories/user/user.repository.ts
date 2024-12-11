@@ -1,6 +1,7 @@
 import { NewUser, User, UserUpdate } from "../../types/schema";
 import { IUserRepository } from "./userRepository.interface";
 import { db } from "../../config/database.js";
+
 export class UserRepository implements IUserRepository {
   async create(entity: NewUser): Promise<User> {
     return await db
