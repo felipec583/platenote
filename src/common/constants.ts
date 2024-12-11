@@ -51,6 +51,8 @@ const SEVEN_DAYS = new Date(CURRENT_DATE);
 SEVEN_DAYS.setDate(CURRENT_DATE.getDate() - 7);
 
 const PLATE_PATTERN = /^([A-Z]{2}\d{4}|[A-Z]{4}\d{2})$/;
+const PASSWORD_PATTERN =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-.]).{8,10}$/;
 
 export {
   dbConnection,
@@ -60,4 +62,5 @@ export {
   PLATE_PATTERN,
   CURRENT_DATE,
   SEVEN_DAYS,
+  PASSWORD_PATTERN,
 };
