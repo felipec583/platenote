@@ -1,4 +1,4 @@
-import { NumberPlateListRepository } from "../repositories/number-plate-list/numberPlateList.repository.js";
+import { NumberPlateListRepository } from "../repositories";
 import { getShift } from "../common/helpers/getShift.js";
 import { getNewFormattedDate } from "../common/utils/formatDate.js";
 import { NewPlateList } from "../types/schema";

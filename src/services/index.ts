@@ -5,5 +5,4 @@ export * from "./numberPlateList.service.js";
 export * from "./numberPlateEntry.service.js";
 export * from "./numberPlate.service.js";
 export * from "./day.service.js";
-
-
+export * from "./auth.service.js";
