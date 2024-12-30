@@ -16,4 +16,8 @@ export class UserService {
     }
   }
   async updateUser() {}
+  async findUserByEmail(email: string) {
+    const foundUser = await this.userRepository.findUserByEmail(email);
+    return foundUser;
+  }
 }

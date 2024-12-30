@@ -33,4 +33,12 @@ export class UserRepository implements IUserRepository {
   async findAll(): Promise<User | User[]> {
     return await db.selectFrom("user").selectAll().execute();
   }
+
+  async findUserByEmail(email: string) {
+    return await db
+      .selectFrom("user")
+      .select(["email", "password", "id", "role"])
+      .where("email", "=", email)
+      .executeTakeFirst();
+  }
 }
