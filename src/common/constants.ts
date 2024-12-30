@@ -13,6 +13,8 @@ const {
   PROD_DB_PASSWORD,
   PROD_DB_PORT,
   PORT,
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
 } = process.env;
 
 const PROD = NODE_ENV === "production";
@@ -63,4 +65,8 @@ export {
   CURRENT_DATE,
   SEVEN_DAYS,
   PASSWORD_PATTERN,
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+  DEV,
+  PROD,
 };
