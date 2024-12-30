@@ -13,4 +13,15 @@ export const newUserSchema = z.object({
   ),
 });
 
+const userId = z.object({
+  id: z.string().uuid({
+    message: "This is not a valid id",
+  }),
+});
+
+const userWithId = newUserSchema.merge(userId);
+
 export type CreateUserDTO = z.infer<typeof newUserSchema>;
+export type UserDto = CreateUserDTO;
+
+export type CoreUserDTO = z.infer<typeof userWithId>;
