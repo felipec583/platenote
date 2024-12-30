@@ -1,4 +1,4 @@
-type errorContent = {
+export type errorContent = {
   statusCode: number;
   message: string;
 };
