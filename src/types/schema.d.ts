@@ -61,6 +61,7 @@ export interface PlateListTable {
   id: Generated<string>;
   shift_id: number;
   day_id: string;
+  created_by: string;
 }
 
 export type PlateList = Selectable<PlateListTable>;
@@ -73,7 +74,6 @@ export interface PlateEntryTable {
   plate_list_id: string;
   is_registered: ColumnType<boolean, boolean | undefined, boolean | undefined>;
   has_left: ColumnType<boolean, boolean | undefined, boolean | undefined>;
-  created_by: string;
 }
 
 export type PlateEntry = Selectable<PlateEntryTable>;
