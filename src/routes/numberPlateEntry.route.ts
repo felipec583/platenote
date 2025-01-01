@@ -1,9 +1,10 @@
 import Express from "express";
 import { numberPlateEntryController } from "../controllers/dependencies.js";
+import { verifyTokenMiddleware } from "../middleware/verifyJWT.middleware.js";
 const router = Express.Router();
 
 router.post(
-  "/",
+  "/", verifyTokenMiddleware,
   numberPlateEntryController.create.bind(numberPlateEntryController)
 );
 
