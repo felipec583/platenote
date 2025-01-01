@@ -3,7 +3,7 @@ import { Kysely } from "kysely";
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
-    .createTable("refresh_token")
+    .createTable("refresh_token").ifNotExists()
     .addColumn("id", "uuid", (col) => col.primaryKey())
     .addColumn("token", "varchar(255)", (col) => col.notNull().unique())
     .addColumn("user_id", "uuid", (col) => col.references("user.id").notNull())
