@@ -66,7 +66,7 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     return await db
       .selectFrom("plate_list as p")
       .leftJoin("day as d", "p.day_id", "d.id")
-      .select("p.id")
+      .select(["p.id", "p.created_by"])
       .where("d.date", "=", formattedDate)
       .where("p.shift_id", "=", shift)
       .executeTakeFirst();
