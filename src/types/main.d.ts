@@ -3,6 +3,20 @@ import { Request, Response, NextFunction } from "express";
 import { BaseError } from "../common/helpers/error";
 import { ZodError } from "zod";
 
+declare global {
+  namespace Express {
+    export interface Request {
+      token: JWTpayloadI | string;
+    }
+  }
+}
+
+
+
+interface JWTpayloadI {
+  [key: string]: string | number;
+}
+
 type RequestHandler = (req: Request, res: Response, next: NextFunction) => void;
 
 type ErrorHandler = (
