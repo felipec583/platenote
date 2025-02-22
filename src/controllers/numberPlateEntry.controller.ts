@@ -1,6 +1,6 @@
 import { NumberPlateEntryService } from "../services/";
 import { NextFunction, Request, Response } from "express";
-
+import { JWTpayloadI } from "../types/main";
 export class NumberPlateEntryController {
   constructor(
     private readonly numberPlateEntryService: NumberPlateEntryService
@@ -8,14 +8,12 @@ export class NumberPlateEntryController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const created_by = "341a1495-61aa-4042-b404-5fa41ab99303";
       const { number_plate } = req.body;
-      const input = {
-        created_by,
+      const { id: userId } = req.token as JWTpayloadI;
+      const newEntry = await this.numberPlateEntryService.create(
         number_plate,
-      };
-
-      const newEntry = await this.numberPlateEntryService.create(input);
+        userId as string
+      );
 
       return res.status(201).json({ ...newEntry });
     } catch (error) {
@@ -47,9 +45,7 @@ export class NumberPlateEntryController {
         has_left
       );
 
-      return res
-        .status(200)
-        .json({ numberPlate, message: updatedStatus });
+      return res.status(200).json({ numberPlate, message: updatedStatus });
     } catch (error) {
       next(error);
     }
