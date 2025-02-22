@@ -3,21 +3,23 @@ import { Request, Response, NextFunction } from "express";
 import { Day } from "../types/schema";
 import { getShift } from "../common/helpers/getShift.js";
 import { FindListsRequestQuery, CustomRequest } from "../types/main";
-
+import { JWTpayloadI } from "../types/main";
 export class NumberPlateListController {
   constructor(
     private readonly platelistService: NumberPlateListService,
     private readonly dayService: DayService
   ) {}
 
-  async create(_req: Request, res: Response, next: NextFunction) {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
       const newDay: Day = await this.dayService.createNewDay();
       const dayId = newDay.id as string;
       const shiftId = getShift() as number;
+      const { id: userId } = req.token as JWTpayloadI;
       const newPlateList = await this.platelistService.create({
         day_id: dayId,
         shift_id: shiftId,
+        created_by: userId as string,
       });
       return res.status(200).json({ ...newPlateList });
     } catch (error) {

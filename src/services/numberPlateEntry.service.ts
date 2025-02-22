@@ -1,4 +1,4 @@
-import { NewPlateEntry, NumberPlate } from "../types/schema";
+import { NewPlateEntry } from "../types/schema";
 import { NumberPlateEntryRepository } from "../repositories/number-plate-entry/numberPlateEntry.repository";
 import { getShift } from "../common/helpers/getShift.js";
 import { NumberPlateListRepository } from "../repositories/number-plate-list/numberPlateList.repository";
@@ -13,16 +13,17 @@ export class NumberPlateEntryService {
     private readonly numberPlateListRepository: NumberPlateListRepository,
     private readonly numberPlateService: NumberPlateService
   ) {}
-  async create(userInput: { created_by: string; number_plate: string }) {
+  async create(numberplate: string, createdBy: string) {
     //tink of better adding the services instead other entities repositories
-    const { created_by, number_plate } = userInput;
+
     let foundPlate = (await this.numberPlateService.findBy(
       "number_plate",
-      userInput.number_plate
-    )) as NumberPlate;
+      numberplate
+    ));
+
     if (!foundPlate) {
       foundPlate = await this.numberPlateService.create({
-        number_plate: number_plate,
+        number_plate: numberplate,
       });
     }
     const shiftId = getShift();
@@ -35,7 +36,8 @@ export class NumberPlateEntryService {
     if (!foundPlateList) {
       throw new HttpError("A list has not been created", 400);
     }
-
+    if (foundPlateList.created_by !== createdBy)
+      throw new HttpError("You are not the list creator", 400);
     const foundPlateInEntry = await this.numberPlateEntryRepository.findBy(
       ["plate_id", "plate_list_id"],
       [foundPlate.id, foundPlateList?.id]
@@ -48,7 +50,6 @@ export class NumberPlateEntryService {
       );
     const entry: NewPlateEntry = {
       plate_id: foundPlate.id,
-      created_by,
       plate_list_id: foundPlateList.id,
     };
 

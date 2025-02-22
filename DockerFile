@@ -1,0 +1,12 @@
+FROM node:22-alpine
+
+COPY package.json /app/
+COPY ./ /app/
+
+WORKDIR /app
+
+RUN npm install
+
+ENV NODE_ENV=development
+
+CMD ["npx", "cross-env", "NODE_ENV=development", "node", "--watch", "build/app.js"]

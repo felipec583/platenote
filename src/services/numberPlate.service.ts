@@ -62,7 +62,7 @@ export class NumberPlateService {
     const numberPlateTenant = await this.numberPlateRepository.findBy("id", id);
     if (!numberPlateTenant)
       throw new HttpError("This number plate does not exist");
-    numberPlateTenant.is_tenant = !numberPlateTenant?.is_tenant as boolean;
+    numberPlateTenant.is_tenant = !numberPlateTenant?.is_tenant;
     const updatedNumberPlate = this.numberPlateRepository.update(
       id,
       numberPlateTenant

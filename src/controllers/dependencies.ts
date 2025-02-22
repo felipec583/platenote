@@ -4,6 +4,7 @@ import {
   NumberPlateListRepository,
   DayRepository,
   UserRepository,
+  RefreshTokenRepository,
 } from "../repositories/index.js";
 import {
   NumberPlateService,
@@ -29,6 +30,7 @@ const dayRepository = new DayRepository();
 const numberPlateListRepository = new NumberPlateListRepository();
 const numberPlateEntryRepository = new NumberPlateEntryRepository();
 const userRepository = new UserRepository();
+const refreshTokenRepository = new RefreshTokenRepository();
 
 // SERVICES
 const dayService = new DayService(dayRepository);
@@ -45,7 +47,7 @@ const numberPlateEntryService = new NumberPlateEntryService(
   numberPlateListRepository,
   numberPlateService
 );
-const tokenService = new TokenService();
+export const tokenService = new TokenService(refreshTokenRepository);
 const userService = new UserService(userRepository);
 const passwordService = new PasswordService(userRepository);
 export const authService = new AuthService(
