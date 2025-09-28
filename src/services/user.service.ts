@@ -9,6 +9,7 @@ export class UserService {
     try {
       const newUser = await this.userRepository.create({
         ...user,
+        role: "operator",
       });
       return newUser;
     } catch (error) {

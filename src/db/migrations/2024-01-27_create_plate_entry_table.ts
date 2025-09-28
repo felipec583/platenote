@@ -1,11 +1,13 @@
-import { Kysely } from "kysely";
+import { Kysely, sql } from "kysely";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("plate_entry")
     .ifNotExists()
-    .addColumn("id", "uuid", (col) => col.primaryKey())
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
     .addColumn("plate_id", "uuid", (col) =>
       col.references("number_plate.id").notNull()
     )
