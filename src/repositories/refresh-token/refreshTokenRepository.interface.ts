@@ -7,5 +7,5 @@ import {
 
 export interface IRefreshTokenRepository
   extends Repository<RefreshToken, NewRefreshToken, RefreshTokenUpdate> {
-   
+
   }

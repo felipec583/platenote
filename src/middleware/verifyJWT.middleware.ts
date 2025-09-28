@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_KEY } from "../common/constants.js";
 import { tokenService } from "../controllers/dependencies.js";
-import { JWTpayloadI, RequestHandler } from "../types/main";
+import { JWTpayloadI, RequestHandler } from "../types/main.js";
 
 export const verifyTokenMiddleware: RequestHandler = async (req, res, next) => {
   try {

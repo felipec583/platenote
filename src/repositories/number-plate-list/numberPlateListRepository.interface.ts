@@ -27,5 +27,5 @@ export interface INumberPlateListRepository
   findCurrent(shift: number): Promise<PlateListDTO[] | []>;
   findByShift(shift: number): Promise<ListsDTO[] | []>;
   findByDateRangeOrShift(params: FindListsParams): Promise<ListDTO[] | []>;
-  findPreviousList(shift:number): Promise<ListDTO | undefined>;
+  findPreviousList(shift: number): Promise<ListDTO | undefined>;
 }

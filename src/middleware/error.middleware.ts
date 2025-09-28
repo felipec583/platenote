@@ -21,5 +21,5 @@ export const errorMiddleware: ErrorHandler = async (err, req, res, _next) => {
     return res.status(400).json(error);
   }
   res.log.error(err.message);
-  return res.status(500).json(err.message || "Something happened");
+  return res.status(500).json(err);
 };

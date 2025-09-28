@@ -11,8 +11,6 @@ declare global {
   }
 }
 
-
-
 interface JWTpayloadI {
   [key: string]: string | number;
 }
@@ -67,3 +65,12 @@ interface Counter {
 
   isTenant: number;
 }
+
+type NumberPlateInfo = {
+  is_tenant: boolean;
+  number_plate: string;
+  is_registered: boolean;
+  has_left: boolean;
+};
+
+type PlateTypeFinder = "id" | "number_plate"

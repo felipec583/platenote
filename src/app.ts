@@ -20,4 +20,5 @@ app.get("*", (req, res) => {
 !ENVIRONMENT.TEST &&
   app.listen(PORT, async () => {
     console.log(`LISTENING ON PORT ${PORT}`);
+    console.log(`Environment ${process.env.NODE_ENV}`);
   });

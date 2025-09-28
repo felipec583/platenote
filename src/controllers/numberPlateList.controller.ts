@@ -56,7 +56,7 @@ export class NumberPlateListController {
     }
   }
 
-  async findPreviousFromCurrentList(
+  async   findPreviousFromCurrentList(
     _req: Request,
     res: Response,
     next: NextFunction

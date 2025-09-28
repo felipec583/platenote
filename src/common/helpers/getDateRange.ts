@@ -1,4 +1,7 @@
-export function getDateRange(start: Date | undefined, end: Date | undefined) {
+export function getDateRange(
+  start: Date | undefined,
+  end: Date | undefined
+): { start: Date | undefined; end: Date | undefined } | undefined {
   // Limit 7 days
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
   // Discard the time and time-zone information.

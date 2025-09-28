@@ -2,7 +2,8 @@ import { HttpError } from "../common/helpers/error.js";
 import { testPlatePattern } from "../common/utils/testPlatePattern.js";
 import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
 import { NumberPlateTypes } from "../repositories/number-plate/numberPlateRepository.interface.js";
-import { NewNumberPlate } from "../types/schema";
+import { PlateTypeFinder } from "../types/main.js";
+import { NewNumberPlate } from "../types/schema.js";
 import { NumberPlateListService } from "./";
 
 export class NumberPlateService {
@@ -58,13 +59,16 @@ export class NumberPlateService {
     return this.numberPlateRepository.delete(id);
   }
 
-  async updateTenantStatus(id: string) {
-    const numberPlateTenant = await this.numberPlateRepository.findBy("id", id);
+  async updateTenantStatus(type: PlateTypeFinder, value: string) {
+    const numberPlateTenant = await this.numberPlateRepository.findBy(
+      type,
+      value
+    );
     if (!numberPlateTenant)
       throw new HttpError("This number plate does not exist");
     numberPlateTenant.is_tenant = !numberPlateTenant?.is_tenant;
     const updatedNumberPlate = this.numberPlateRepository.update(
-      id,
+      value,
       numberPlateTenant
     );
     return updatedNumberPlate;

@@ -1,6 +1,6 @@
 import { DatabaseError } from "../common/helpers/error.js";
 import { UserRepository } from "../repositories";
-import { NewUser } from "../types/schema";
+import { NewUser } from "../types/schema.js";
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
