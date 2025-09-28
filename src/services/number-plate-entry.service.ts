@@ -1,11 +1,11 @@
-import { NewPlateEntry } from "../types/schema";
-import { NumberPlateEntryRepository } from "../repositories/number-plate-entry/number-plate-entry-repository";
+import { NewPlateEntry } from "../types/schema.js";
+import { NumberPlateEntryRepository } from "../repositories/number-plate-entry/number-plate-entry-repository.js";
 import { getShift } from "../common/helpers/getShift.js";
+import { NumberPlateListRepository } from "../repositories/number-plate-list/number-plate-list-repository.js";
 import { getNewFormattedDate } from "../common/utils/formatDate.js";
 import { NumberPlateService } from "./";
 import { HttpError } from "../common/helpers/error.js";
-import { NumberPlateListRepository } from "../repositories";
-import { statusType } from "../repositories/number-plate-entry/number-plate-entry-repository.interface";
+import { statusType } from "../repositories/number-plate-entry/number-plate-entry-repository.interface.js";
 
 export class NumberPlateEntryService {
   constructor(

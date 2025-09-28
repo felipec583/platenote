@@ -1,7 +1,7 @@
 import { HttpError } from "../common/helpers/error.js";
 import { testPlatePattern } from "../common/utils/testPlatePattern.js";
-import { NumberPlateRepository } from "../repositories/number-plate/numberPlate.repository";
-import { NumberPlateTypes } from "../repositories/number-plate/numberPlateRepository.interface.js";
+import { NumberPlateRepository } from "../repositories/number-plate/number-plate-repository.js";
+import { NumberPlateTypes } from "../repositories/number-plate/number-plate-repository.interface.js";
 import { PlateTypeFinder } from "../types/main.js";
 import { NewNumberPlate } from "../types/schema.js";
 import { NumberPlateListService } from "./";

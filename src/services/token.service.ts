@@ -11,7 +11,6 @@ import { ACCESS_TOKEN_KEY } from "../common/constants.js";
 export class TokenService {
   constructor(private refreshTokenRepository: RefreshTokenRepository) {}
 
-
   async generateNewToken(params: NewTokenParams) {
     const { expiresIn, data, private_key } = params;
     const newToken = jwt.sign(data, private_key as string, { expiresIn });

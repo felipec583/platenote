@@ -1,6 +1,6 @@
-import { NewDay } from "../../types/schema";
-import { IDayRepository, dayValues } from "./dayRepository.interface";
-import { db } from "../../config/database.js";
+import { NewDay } from "../../types/schema.js";
+import { IDayRepository, dayValues } from "./day-repository.interface.js";
+import { db } from "../../config/db-connection.js";
 
 export class DayRepository implements IDayRepository {
   async create(day: NewDay) {

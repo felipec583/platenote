@@ -1,7 +1,7 @@
 import { NumberPlateListRepository } from "../repositories";
 import { getShift } from "../common/helpers/getShift.js";
 import { getNewFormattedDate } from "../common/utils/formatDate.js";
-import { NewPlateList } from "../types/schema";
+import { NewPlateList } from "../types/schema.js";
 import { HttpError } from "../common/helpers/error.js";
 import formatPlateList from "../common/helpers/formatPlateList.js";
 export class NumberPlateListService {

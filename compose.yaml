@@ -1,5 +1,6 @@
 services:
   platenote-api:
+    container_name: platenote-api
     build:
      context: .
     ports:
@@ -15,7 +16,7 @@ services:
       timeout: 10s
       retries: 3
     depends_on:
-      - platenote-db
+    - platenote-db
   platenote-db:
     image: postgres:15-alpine
     healthcheck:
@@ -30,7 +31,7 @@ services:
       - POSTGRES_PASSWORD=${DEV_DB_PASSWORD}
       - POSTGRES_DB=${DEV_DB_NAME}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - platenote-db-data:/var/lib/postgresql/data
 volumes:
-  pgdata:
+  platenote-db-data:
 

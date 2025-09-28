@@ -1,9 +1,9 @@
-import { db } from "../../config/database.js";
+import { db } from "../../config/db-connection.js";
 import { NewNumberPlate, NumberPlateUpdate } from "../../types/schema.js";
 import {
   INumberPlateRepository,
   NumberPlateTypes,
-} from "../number-plate/numberPlateRepository.interface";
+} from "./number-plate-repository.interface.js";
 import { sql } from "kysely";
 export class NumberPlateRepository implements INumberPlateRepository {
   async findById(id: string): Promise<object | undefined> {

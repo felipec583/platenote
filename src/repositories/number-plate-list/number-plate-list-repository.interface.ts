@@ -1,6 +1,14 @@
-import { ListDTO, ListsDTO, PlateListDTO } from "../../DTO/numberPlateList.dto";
-import { NewPlateList, PlateList, PlateListUpdate } from "../../types/schema";
-import { Repository } from "../genericRepository";
+import {
+  ListDTO,
+  ListsDTO,
+  PlateListDTO,
+} from "../../DTO/numberPlateList.dto.js";
+import {
+  NewPlateList,
+  PlateList,
+  PlateListUpdate,
+} from "../../types/schema.js";
+import { Repository } from "../genericRepository.js";
 
 export type NumberPlateListTypes = "day_id" | "shift_id" | "id";
 
