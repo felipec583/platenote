@@ -1,4 +1,4 @@
-import { DayRepository } from "../repositories/day/dayRepository.js";
+import { DayRepository } from "../repositories/index.js";
 import { getNewFormattedDate } from "../common/utils/formatDate.js";
 
 export class DayService {

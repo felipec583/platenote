@@ -58,8 +58,11 @@ export class NumberPlateController {
 
   async updateTenant(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.body;
-      const setIsTenant = await this.numberPlateService.updateTenantStatus(id);
+      const { type, id } = req.body;
+      const setIsTenant = await this.numberPlateService.updateTenantStatus(
+        type,
+        id
+      );
       return res.status(200).json(...setIsTenant);
     } catch (error) {
       next(error);

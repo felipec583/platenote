@@ -1,10 +1,10 @@
-import { IRefreshTokenRepository } from "./refreshTokenRepository.interface";
+import { IRefreshTokenRepository } from "./refresh-token-repository.interface.js";
 import {
   RefreshToken,
   RefreshTokenUpdate,
   NewRefreshToken,
-} from "../../types/schema";
-import { db } from "../../config/database.js";
+} from "../../types/schema.js";
+import { db } from "../../config/db-connection.js";
 export class RefreshTokenRepository implements IRefreshTokenRepository {
   async create(entity: NewRefreshToken) {
     return await db

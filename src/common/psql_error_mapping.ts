@@ -8,8 +8,7 @@ export const PSQL_ERRORS = new Map<string, errorContent>([
     "23505",
     {
       statusCode: 409,
-      message:
-        "Conflict - Unique constraint violation.",
+      message: "Conflict - Unique constraint violation.",
     },
   ],
   ["23503", { statusCode: 409, message: "Conflict - Foreign key violation" }],

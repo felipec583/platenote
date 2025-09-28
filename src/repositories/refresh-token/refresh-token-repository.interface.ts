@@ -6,6 +6,4 @@ import {
 } from "../../types/schema";
 
 export interface IRefreshTokenRepository
-  extends Repository<RefreshToken, NewRefreshToken, RefreshTokenUpdate> {
-   
-  }
+  extends Repository<RefreshToken, NewRefreshToken, RefreshTokenUpdate> {}

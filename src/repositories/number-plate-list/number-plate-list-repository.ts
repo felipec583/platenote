@@ -2,13 +2,13 @@ import {
   FindListsParams,
   INumberPlateListRepository,
   NumberPlateListTypes,
-} from "./numberPlateListRepository.interface";
-import { db } from "../../config/database.js";
-import { NewPlateList, PlateListUpdate } from "../../types/schema";
+} from "./number-plate-list-repository.interface.js";
+import { db } from "../../config/db-connection.js";
+import { NewPlateList, PlateListUpdate } from "../../types/schema.js";
 import { sql } from "kysely";
 import { SEVEN_DAYS, CURRENT_DATE } from "../../common/constants.js";
 import { getDateRange } from "../../common/helpers/getDateRange.js";
-import { ListDTO } from "../../DTO/numberPlateList.dto";
+import { ListDTO } from "../../DTO/numberPlateList.dto.js";
 
 export class NumberPlateListRepository implements INumberPlateListRepository {
   async create(plateList: NewPlateList) {
@@ -96,7 +96,6 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
       .selectFrom("plate_list as pl")
       .innerJoin("day as d", "d.id", "pl.day_id")
       .select(["pl.id", "pl.shift_id", "d.date"]);
-
     if (shift === 1) {
       query = query
         .where(sql`d.date`, "=", sql`CURRENT_DATE`)
@@ -116,9 +115,10 @@ export class NumberPlateListRepository implements INumberPlateListRepository {
     let first = SEVEN_DAYS;
     let end = CURRENT_DATE;
     const ranges = getDateRange(startDate, endDate);
+    console.log(ranges);
     if (ranges) {
-      first = ranges.start;
-      end = ranges.end;
+      first = ranges.start as Date;
+      end = ranges.end as Date;
     }
     let query = db
       .selectFrom("plate_list as pl")

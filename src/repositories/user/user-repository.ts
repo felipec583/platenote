@@ -1,6 +1,6 @@
-import { NewUser, User, UserUpdate } from "../../types/schema";
-import { IUserRepository } from "./userRepository.interface";
-import { db } from "../../config/database.js";
+import { NewUser, User, UserUpdate } from "../../types/schema.js";
+import { IUserRepository } from "./user-repository.interface.js";
+import { db } from "../../config/db-connection.js";
 
 export class UserRepository implements IUserRepository {
   async create(entity: NewUser): Promise<User> {

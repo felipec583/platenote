@@ -2,13 +2,13 @@ import {
   changeStatusParams,
   INumberPlateEntryRepository,
   NumberEntryValuesType,
-} from "./numberPlateEntryRepository.interface";
-import { db } from "../../config/database.js";
+} from "./number-plate-entry-repository.interface.js";
+import { db } from "../../config/db-connection.js";
 import {
   NewPlateEntry,
   PlateEntry,
   PlateEntryUpdate,
-} from "../../types/schema";
+} from "../../types/schema.js";
 
 export class NumberPlateEntryRepository implements INumberPlateEntryRepository {
   async update(id: string, entity: PlateEntryUpdate) {

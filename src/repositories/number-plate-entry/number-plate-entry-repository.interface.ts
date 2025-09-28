@@ -2,7 +2,7 @@ import {
   NewPlateEntry,
   PlateEntryUpdate,
   PlateEntry,
-} from "../../types/schema";
+} from "../../types/schema.js";
 import { Repository } from "../genericRepository.js";
 
 export type NumberEntryValuesType =

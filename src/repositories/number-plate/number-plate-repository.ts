@@ -1,9 +1,9 @@
-import { db } from "../../config/database.js";
+import { db } from "../../config/db-connection.js";
 import { NewNumberPlate, NumberPlateUpdate } from "../../types/schema.js";
 import {
   INumberPlateRepository,
   NumberPlateTypes,
-} from "../number-plate/numberPlateRepository.interface";
+} from "./number-plate-repository.interface.js";
 import { sql } from "kysely";
 export class NumberPlateRepository implements INumberPlateRepository {
   async findById(id: string): Promise<object | undefined> {
@@ -47,14 +47,19 @@ export class NumberPlateRepository implements INumberPlateRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async update(id: string, updateWith: NumberPlateUpdate) {
-    const query = await db
-      .updateTable("number_plate")
-      .set(updateWith)
-      .where("id", "=", id)
-      .returning(["number_plate", "is_tenant"])
+  async update(type: string, updateWith: NumberPlateUpdate) {
+    const identifierLength = type.length;
+    let query = db.updateTable("number_plate").set(updateWith);
+
+    if (identifierLength === 36) {
+      query = query.where("id", "=", type);
+    } else {
+      query = query.where("number_plate", "=", type);
+    }
+    const updatedNumberPlateStatus = await query
+      .returning(["number_plate", "number_plate.is_tenant"])
       .execute();
-    return query;
+    return updatedNumberPlateStatus;
   }
 
   async delete(id: string) {
