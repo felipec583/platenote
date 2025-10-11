@@ -2,21 +2,19 @@ services:
   platenote-api:
     container_name: platenote-api
     build:
-     context: .
+      context: .
     ports:
       - "3000:3000"
-    env_file:
-      - ./.env
     environment:
-    - NODE_ENV=development
-    - DEV_DB_HOST=platenote-db
+      - NODE_ENV=development
+      - DEV_DB_HOST=platenote-db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3
     depends_on:
-    - platenote-db
+      - platenote-db
   platenote-db:
     image: postgres:15-alpine
     healthcheck:
@@ -27,11 +25,10 @@ services:
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_USER=${DEV_DB_USER}
-      - POSTGRES_PASSWORD=${DEV_DB_PASSWORD}
-      - POSTGRES_DB=${DEV_DB_NAME}
+      POSTGRES_USER: ${DEV_DB_USER:-test_user}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD:-test_password}
+      POSTGRES_DB: ${DEV_DB_NAME:-platenote_test}
     volumes:
       - platenote-db-data:/var/lib/postgresql/data
 volumes:
   platenote-db-data:
-
