@@ -1,0 +1,66 @@
+name: CI
+on:
+    push: {branches: [main]}
+    pull_request:
+        branches: [main]
+
+
+jobs:
+    fast-checks:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 20
+                cache: npm
+            - run: npm ci
+            - run: npm run build
+    db-integration:
+        name: DB integration (compose)
+        runs-on: ubuntu-latest
+
+        needs: [fast-checks]
+        env:
+            DEV_DB_USER: test_user
+            DEV_DB_PASSWORD: test_password
+            DEV_DB_NAME: platenote_test
+            DATABASE_URL: postgres://test_user:test_password@localhost:5433/platenote_test
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Setup node 20
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+                cache: npm
+            - name: install deps
+              run: npm ci
+
+            - name: Start postgres instance via Compose
+              run: docker compose -f compose.yaml up -d platenote-db
+            - name: Wait for DB healthy
+              run: |
+                    for i in {1..30}; do
+                    cid=$(docker compose -f compose.yaml ps -q platenote-db)
+                    status=$(docker inspect --format='{{.State.Health.Status}}' "$cid")
+                     echo "DB health: $status"
+                     [ "$status" = "healthy" ] && exit 0
+                     sleep 2
+                    done
+                    echo "DB did not become healthy in time" && exit 1
+            - name: Run migrations
+              run: npm run m -- migrate:latest
+
+            - name: RUn seeders
+              run: npm run m -- seed:run
+
+              # Run DB tests
+
+            - name: Stop compose and remove volumes
+              if: always()
+              run: docker compose -f compose.yaml down -v
+
+
+
