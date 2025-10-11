@@ -24,6 +24,8 @@ jobs:
         env:
             DEV_DB_USER: test_user
             DEV_DB_PASSWORD: test_password
+            DEV_DB_HOST: 127.0.0.1
+            DEV_DB_PORT: '5433'
             DEV_DB_NAME: platenote_test
             DATABASE_URL: postgres://test_user:test_password@localhost:5433/platenote_test
         steps:
