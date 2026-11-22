@@ -4,6 +4,24 @@ REST API for a shift log of vehicle plates. Each day has a morning list and an e
 
 There is no frontend in this repository. Interactive docs are served by Swagger UI.
 
+## How a shift works
+
+```mermaid
+sequenceDiagram
+  participant Op as Operator
+  participant API as Express
+  participant DB as PostgreSQL
+  Op->>API: POST /api/v1/lists
+  API->>DB: one list for today and the current shift
+  Op->>API: POST /api/v1/entry
+  API->>DB: plate on that list
+  Op->>API: GET /api/v1/number-plate/suggestion/search
+  API->>DB: previous shift first, then other prefix matches
+  DB-->>Op: up to 5 plates
+```
+
+From 05:00 through 11:00 the current shift is morning. Any other hour is evening.
+
 ## Stack
 
 Node.js 20, TypeScript, Express, PostgreSQL 15, Kysely, Zod, JWT, Pino. Swagger UI at `/api/v1/docs`.
